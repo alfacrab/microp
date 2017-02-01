@@ -72,6 +72,9 @@ func (mc MagickCropper) ShapeImage(t uint8, param float64) error {
 }
 
 func main() {
+	flow := make(chan *MagickCropper)
+	batch := make(chan bool)
+
 	// TODO move to yaml config
 	SIZES := [][2]uint{
 		{32, 32},
@@ -93,14 +96,24 @@ func main() {
 
 	// TODO try goroutines
 	for _, pair := range SIZES {
-		crp := MagickCropper{mw.Clone()}
+		go func(p [2]uint) {
+			crp := *(<-flow) //*() ???
+			// check type
+			crp.SmartCrop(p[0], p[1])
 
-		crp.SmartCrop(pair[0], pair[1])
+			// TODO move to yaml config
+			crp.ShapeImage(SHAPE_MASK_ROUNDRECT, 10)
+			crp.MagickWand.WriteImage(
+				fmt.Sprintf("out_%dx%d.png", p[0], p[1]))
 
-		// TODO move to yaml config
-		crp.ShapeImage(SHAPE_MASK_ROUNDRECT, 10)
+			batch<-true
+		}(pair)
 
-		crp.MagickWand.WriteImage(
-			fmt.Sprintf("out_%dx%d.png", pair[0], pair[1]))
+		flow <- &MagickCropper{mw.Clone()}
+	}
+
+	for s := 0; s < len(SIZES); s++ {
+		fmt.Println("ololo!")
+		<-batch
 	}
 }
