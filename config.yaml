@@ -1,0 +1,9 @@
+prefix: superdupericon
+icons:
+- width: 120
+  height: 80
+  type: circle
+- width: 100
+  height: 100
+  type: rounded
+  radius: 5
