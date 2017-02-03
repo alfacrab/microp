@@ -6,8 +6,9 @@ import (
 )
 
 const (
-	SHAPE_MASK_CIRCLE uint8 = iota
-	SHAPE_MASK_ROUNDRECT
+	SHAPE_MASK_CIRCLE    string = "circle"
+	SHAPE_MASK_ROUNDRECT string = "rounded"
+	SHAPE_DIAMOND        string = "diamond"
 )
 
 type MagickCropper struct {
@@ -37,7 +38,7 @@ func (mc MagickCropper) SmartCrop(w, h uint) error {
 	return err
 }
 
-func (mc MagickCropper) ShapeImage(t uint8, param float64) error {
+func (mc MagickCropper) ShapeImage(t string, param float64) error {
 	w, h := mc.GetImageWidth(), mc.GetImageHeight()
 	result := imagick.NewMagickWand()
 	canvas := imagick.NewDrawingWand()
@@ -52,13 +53,21 @@ func (mc MagickCropper) ShapeImage(t uint8, param float64) error {
 	switch t {
 	case SHAPE_MASK_CIRCLE:
 		if w > h {
-			canvas.Circle(float64(w)/2, float64(h)/2, float64(w)/2, float64(h))
+			canvas.Circle(float64(w)/2, float64(h)/2, float64(w)/2, float64(h-1))
 		} else {
-			canvas.Circle(float64(w)/2, float64(h)/2, float64(w), float64(h)/2)
+			canvas.Circle(float64(w)/2, float64(h)/2, float64(w-1), float64(h)/2)
 		}
 
 	case SHAPE_MASK_ROUNDRECT:
 		canvas.RoundRectangle(0, 0, float64(w), float64(h), param, param)
+
+	case SHAPE_DIAMOND:
+		canvas.Polygon([]imagick.PointInfo{
+			{float64(w) / 2, 0},
+			{float64(w), float64(h) / 2},
+			{float64(w) / 2, float64(h)},
+			{0, float64(h) / 2},
+		})
 	}
 
 	result.DrawImage(canvas)

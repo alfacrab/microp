@@ -1,55 +1,83 @@
 package main
 
 import (
-	//"fmt"
+	"flag"
+	"fmt"
 	L "github.com/absinsekt/mobile-icon-cropper/lib"
-	//"gopkg.in/gographics/imagick.v2/imagick"
+	"gopkg.in/gographics/imagick.v2/imagick"
+	"os"
+	"path/filepath"
 )
 
 func main() {
+	var (
+		srcImageFile    string
+		configFile      string
+		targetDirectory string
+		concurrency     uint
+	)
+
+	flag.StringVar(&configFile, "f", "config.yaml", "configuration file in yaml format (default: config.yaml)")
+	flag.StringVar(&targetDirectory, "d", "out", "target directory (default: out)")
+	flag.UintVar(&concurrency, "c", 5, "batch concurrency (default: 5)")
+	flag.Parse()
+
+	if concurrency > 10 || concurrency < 1 {
+		concurrency = 5
+	}
+
+	args := flag.Args()
+
+	if len(args) == 0 {
+		notifyError("source file not set")
+	} else {
+		srcImageFile = args[0]
+	}
+
 	conf := L.ConfigProvider{}
-	conf.Initialize("config.yaml")
-	//flow := make(chan L.MagickCropper)
-	//batch := make(chan bool)
+	conf.Initialize(configFile)
 
-	// TODO move to yaml config
-	//SIZES := [][2]uint{
-	//	{32, 32},
-	//	{64, 64},
-	//	{128, 128},
-	//	{128, 64},
-	//	{64, 128},
-	//}
+	imagick.Initialize()
+	defer imagick.Terminate()
 
-	//imagick.Initialize()
-	//defer imagick.Terminate()
-	//
-	//mw := imagick.NewMagickWand()
-	//
-	// TODO move to cli params
-	//if err := mw.ReadImage("test.jpg"); err != nil {
-	//	panic(err)
-	//}
+	mw := imagick.NewMagickWand()
 
-	//for _, pair := range SIZES {
-	//	go func(p [2]uint) {
-	//		crp := <-flow
-	//
-	//		crp.SmartCrop(p[0], p[1])
-	//
-	//		// TODO move to yaml config
-	//		crp.ShapeImage(SHAPE_MASK_ROUNDRECT, 10)
-	//		crp.MagickWand.WriteImage(
-	//			fmt.Sprintf("out_%dx%d.png", p[0], p[1]))
-	//
-	//		batch<-true
-	//	}(pair)
-	//
-	//	flow <- MagickCropper{mw.Clone()}
-	//}
-	//
-	//for s := 0; s < len(SIZES); s++ {
-	//	//fmt.Println("ololo!")
-	//	<-batch
-	//}
+	if err := mw.ReadImage(srcImageFile); err != nil {
+		notifyError(err)
+	}
+
+	if err := os.MkdirAll(targetDirectory, 0755); err != nil {
+		notifyError(err)
+	}
+
+	batch := make(chan L.MagickCropper, concurrency)
+	done := make(chan string)
+
+	for _, set := range conf.ConfigData.Sets {
+		for _, icon := range set.Icons {
+			go func(tf string, icfg L.IconConfig) {
+				crp := <-batch
+
+				crp.SmartCrop(icfg.Width, icfg.Height)
+				crp.ShapeImage(icfg.Type, 10)
+
+				if err := crp.MagickWand.WriteImage(filepath.Join(targetDirectory, tf)); err != nil {
+					notifyError(err)
+				}
+
+				done <- tf
+
+			}(fmt.Sprintf("%s_%dx%d.png", set.Prefix, icon.Width, icon.Height), icon)
+
+			batch <- L.MagickCropper{mw.Clone()}
+		}
+	}
+
+	for i := 0; i < conf.ConfigData.Length(); i++ {
+		fmt.Printf("file ready: %s\n", <-done)
+	}
+}
+
+func notifyError(err interface{}) {
+	panic(err)
 }
