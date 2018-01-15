@@ -68,6 +68,9 @@ func (mc MagickCropper) ShapeImage(t string, param float64) error {
 			{float64(w) / 2, float64(h)},
 			{0, float64(h) / 2},
 		})
+
+	default:
+		canvas.Rectangle(0, 0, float64(w), float64(h))
 	}
 
 	result.DrawImage(canvas)
