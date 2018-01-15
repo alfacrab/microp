@@ -1,7 +1,7 @@
 package lib
 
 import (
-	"gopkg.in/gographics/imagick.v2/imagick"
+	"gopkg.in/gographics/imagick.v3/imagick"
 	"math"
 )
 
@@ -25,9 +25,9 @@ func (mc MagickCropper) SmartCrop(w, h uint) error {
 	aspect := mc.GetAspect()
 
 	if w > h {
-		err = mc.ResizeImage(w, uint(float32(w)/aspect), imagick.FILTER_LANCZOS2_SHARP, 1)
+		err = mc.ResizeImage(w, uint(float32(w)/aspect), imagick.FILTER_LANCZOS2_SHARP)
 	} else {
-		err = mc.ResizeImage(uint(float32(h)*aspect), h, imagick.FILTER_LANCZOS2_SHARP, 1)
+		err = mc.ResizeImage(uint(float32(h)*aspect), h, imagick.FILTER_LANCZOS2_SHARP)
 	}
 
 	nw := int(mc.GetImageWidth())
@@ -71,7 +71,7 @@ func (mc MagickCropper) ShapeImage(t string, param float64) error {
 	}
 
 	result.DrawImage(canvas)
-	result.CompositeImage(mc.MagickWand, imagick.COMPOSITE_OP_SRC_IN, 0, 0)
+	result.CompositeImage(mc.MagickWand, imagick.COMPOSITE_OP_SRC_IN, true, 0, 0)
 
 	mc.MagickWand.Clear()
 	mc.MagickWand.AddImage(result)

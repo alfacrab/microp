@@ -1,6 +1,0 @@
-package: github.com/absinsekt/mobile-icon-cropper
-import:
-- package: gopkg.in/gographics/imagick.v2
-  subpackages:
-  - imagick
-- package: gopkg.in/yaml.v2

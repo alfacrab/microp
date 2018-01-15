@@ -3,8 +3,8 @@ package main
 import (
 	"flag"
 	"fmt"
-	L "github.com/absinsekt/mobile-icon-cropper/lib"
-	"gopkg.in/gographics/imagick.v2/imagick"
+	L "github.com/absinsekt/microp/lib"
+	"gopkg.in/gographics/imagick.v3/imagick"
 	"os"
 	"path/filepath"
 )
@@ -79,5 +79,6 @@ func main() {
 }
 
 func notifyError(err interface{}) {
-	panic(err)
+	fmt.Println(err)
+  os.Exit(1)
 }
