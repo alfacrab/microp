@@ -46,28 +46,39 @@ func main() {
 		notifyError(err)
 	}
 
-	if err := os.MkdirAll(targetDirectory, 0755); err != nil {
-		notifyError(err)
-	}
-
 	batch := make(chan L.MagickCropper, concurrency)
 	done := make(chan string)
 
 	for _, set := range conf.ConfigData.Sets {
 		for _, icon := range set.Icons {
+      var iconName string
+
+      if icon.Name == "" {
+        iconName = fmt.Sprintf("%s_%dx%d.png", set.Prefix, icon.Width, icon.Height)
+      } else {
+        iconName = fmt.Sprintf("%s.png", icon.Name)
+      }
+
+      td := filepath.Join(targetDirectory, set.Prefix)
+      if _, err := os.Stat(td); os.IsNotExist(err) {
+      	if err := os.MkdirAll(td, 0755); err != nil {
+      		notifyError(err)
+      	}
+      }
+
 			go func(tf string, icfg L.IconConfig) {
 				crp := <-batch
 
 				crp.SmartCrop(icfg.Width, icfg.Height)
 				crp.ShapeImage(icfg.Type, 10)
 
-				if err := crp.MagickWand.WriteImage(filepath.Join(targetDirectory, tf)); err != nil {
+				if err := crp.MagickWand.WriteImage(tf); err != nil {
 					notifyError(err)
 				}
 
 				done <- tf
 
-			}(fmt.Sprintf("%s_%dx%d.png", set.Prefix, icon.Width, icon.Height), icon)
+			}(filepath.Join(td, iconName), icon)
 
 			batch <- L.MagickCropper{mw.Clone()}
 		}
@@ -80,5 +91,5 @@ func main() {
 
 func notifyError(err interface{}) {
 	fmt.Println(err)
-  os.Exit(1)
+	os.Exit(1)
 }

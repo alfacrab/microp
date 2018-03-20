@@ -1,0 +1,89 @@
+sets:
+- prefix: ios
+  icons:
+  - width: 1334
+    height: 1334
+    name: Default@2x~iphone~anyany
+  - width: 750
+    height: 1334
+    name: Default@2x~iphone~comany
+  - width: 1334
+    height: 750
+    name: Default@2x~iphone~comcom
+  - width: 2208
+    height: 2208
+    name: Default@3x~iphone~anyany
+  - width: 2208
+    height: 1242
+    name: Default@3x~iphone~anycom
+  - width: 1242
+    height: 2208
+    name: Default@3x~iphone~comany
+  - name: Default-568h@2x~iphone
+    width: 640
+    height: 1136
+  - name: Default-667h
+    width: 750
+    height: 1134
+  - name: Default-736h
+    width: 1242
+    height: 2208
+  - name: Default-Landscape-736h
+    width: 2208
+    height: 1242
+  - name: Default-Landscape@2x~ipad
+    width: 2048
+    height: 1536
+  - name: Default-Landscape~ipad
+    width: 1024
+    height: 768
+  - name: Default-Portrait@2x~ipad
+    width: 1536
+    height: 2048
+  - name: Default-Portrait~ipad
+    width: 768
+    height: 1024
+  - name: Default@2x~iphone
+    width: 640
+    height: 960
+  - name: Default~iphone
+    width: 320
+    height: 480
+- prefix: android
+  icons:
+  - name: drawable-land-hdpi-screen
+    width: 800
+    height: 400
+  - name: drawable-land-ldpi-screen
+    width: 320
+    height: 240
+  - name: drawable-land-mdpi-screen
+    width: 480
+    height: 320
+  - name: drawable-land-xhdpi-screen
+    width: 1280
+    height: 720
+  - name: drawable-land-xxhdpi-screen
+    width: 1600
+    height: 960
+  - name: drawable-land-xxxhdpi-screen
+    width: 1920
+    height: 1280
+  - name: drawable-port-hdpi-screen
+    width: 480
+    height: 800
+  - name: drawable-port-ldpi-screen
+    width: 240
+    height: 320
+  - name: drawable-port-mdpi-screen
+    width: 320
+    height: 480
+  - name: drawable-port-xhdpi-screen
+    width: 720
+    height: 1280
+  - name: drawable-port-xxhdpi-screen
+    width: 960
+    height: 1600
+  - name: drawable-port-xxxhdpi-screen
+    width: 1280
+    height: 1920

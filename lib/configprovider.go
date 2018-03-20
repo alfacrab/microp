@@ -29,6 +29,7 @@ type IconConfig struct {
 	Height uint
 	Radius uint
 	Type string
+  Name string
 }
 
 type ConfigProvider struct {
