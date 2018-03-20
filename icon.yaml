@@ -56,7 +56,7 @@ sets:
   - name: icon@2x
     width: 114
     height: 114
-- prefix: anddroid
+- prefix: android
   icons:
   # Android
   - name: drawable-ldpi-icon
