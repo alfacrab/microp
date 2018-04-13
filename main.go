@@ -70,7 +70,7 @@ func main() {
 				crp := <-batch
 
 				crp.SmartCrop(icfg.Width, icfg.Height)
-				crp.ShapeImage(icfg.Type, 10)
+				crp.ShapeImage(icfg.Type, float64(icfg.Radius))
 
 				if err := crp.MagickWand.WriteImage(tf); err != nil {
 					notifyError(err)
