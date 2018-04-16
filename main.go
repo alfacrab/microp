@@ -35,7 +35,9 @@ func main() {
 	}
 
 	conf := L.ConfigProvider{}
-	conf.Initialize(configFile)
+	if err := conf.Initialize(configFile); err != nil {
+    notifyError(err)
+  }
 
 	imagick.Initialize()
 	defer imagick.Terminate()

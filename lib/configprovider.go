@@ -43,7 +43,11 @@ func (cp *ConfigProvider) Initialize(configFile string) error {
 	if data, err := ioutil.ReadFile(configFile); err != nil {
 		return err
 	} else {
-		yaml.Unmarshal(data, &cp.ConfigData)
+		err = yaml.Unmarshal(data, &cp.ConfigData)
+    if err != nil {
+      return err
+    }
+
 		cp.ConfigFile = configFile
 	}
 
