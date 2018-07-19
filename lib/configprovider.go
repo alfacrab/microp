@@ -20,16 +20,17 @@ func (data *configData) Length() int {
 }
 
 type IconSet struct {
-	Prefix string
-	Icons []IconConfig
+	Prefix      string
+	Icons       []IconConfig
+	RemoveAlpha bool
 }
 
 type IconConfig struct {
-	Width uint
+	Width  uint
 	Height uint
 	Radius uint
-	Type string
-  Name string
+	Type   string
+	Name   string
 }
 
 type ConfigProvider struct {
@@ -44,9 +45,9 @@ func (cp *ConfigProvider) Initialize(configFile string) error {
 		return err
 	} else {
 		err = yaml.Unmarshal(data, &cp.ConfigData)
-    if err != nil {
-      return err
-    }
+		if err != nil {
+			return err
+		}
 
 		cp.ConfigFile = configFile
 	}
