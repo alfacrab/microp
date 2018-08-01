@@ -50,9 +50,9 @@ func (mc MagickCropper) ShapeImage(t string, param float64) error {
 	pw.SetColor("white")
 	canvas.SetFillColor(pw)
 
-  defaultShape := func(cnv *imagick.DrawingWand, width uint, height uint) {
-    cnv.Rectangle(0, 0, float64(width), float64(height))
-  }
+	defaultShape := func(cnv *imagick.DrawingWand, width uint, height uint) {
+		cnv.Rectangle(0, 0, float64(width), float64(height))
+	}
 
 	switch t {
 	case ShapeMaskCircle:
@@ -63,11 +63,11 @@ func (mc MagickCropper) ShapeImage(t string, param float64) error {
 		}
 
 	case ShapeMaskRoundrect:
-    if param != 0 {
-  		canvas.RoundRectangle(0, 0, float64(w), float64(h), param, param)
-    } else {
-      defaultShape(canvas, w, h)
-    }
+		if param != 0 {
+			canvas.RoundRectangle(0, 0, float64(w), float64(h), param, param)
+		} else {
+			defaultShape(canvas, w, h)
+		}
 
 	case ShapeDiamond:
 		canvas.Polygon([]imagick.PointInfo{
@@ -78,7 +78,7 @@ func (mc MagickCropper) ShapeImage(t string, param float64) error {
 		})
 
 	default:
-    defaultShape(canvas, w, h)
+		defaultShape(canvas, w, h)
 	}
 
 	result.DrawImage(canvas)
