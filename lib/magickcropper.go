@@ -6,9 +6,9 @@ import (
 )
 
 const (
-	SHAPE_MASK_CIRCLE    string = "circle"
-	SHAPE_MASK_ROUNDRECT string = "rounded"
-	SHAPE_DIAMOND        string = "diamond"
+	ShapeMaskCircle    string = "circle"
+	ShapeMaskRoundrect string = "rounded"
+	ShapeDiamond       string = "diamond"
 )
 
 type MagickCropper struct {
@@ -51,17 +51,17 @@ func (mc MagickCropper) ShapeImage(t string, param float64) error {
 	canvas.SetFillColor(pw)
 
 	switch t {
-	case SHAPE_MASK_CIRCLE:
+	case ShapeMaskCircle:
 		if w > h {
 			canvas.Circle(float64(w)/2, float64(h)/2, float64(w)/2, float64(h-1))
 		} else {
 			canvas.Circle(float64(w)/2, float64(h)/2, float64(w-1), float64(h)/2)
 		}
 
-	case SHAPE_MASK_ROUNDRECT:
+	case ShapeMaskRoundrect:
 		canvas.RoundRectangle(0, 0, float64(w), float64(h), param, param)
 
-	case SHAPE_DIAMOND:
+	case ShapeDiamond:
 		canvas.Polygon([]imagick.PointInfo{
 			{float64(w) / 2, 0},
 			{float64(w), float64(h) / 2},

@@ -36,8 +36,8 @@ func main() {
 
 	conf := L.ConfigProvider{}
 	if err := conf.Initialize(configFile); err != nil {
-    notifyError(err)
-  }
+		notifyError(err)
+	}
 
 	imagick.Initialize()
 	defer imagick.Terminate()
@@ -53,23 +53,30 @@ func main() {
 
 	for _, set := range conf.ConfigData.Sets {
 		for _, icon := range set.Icons {
-      var iconName string
+			var iconName string
 
-      if icon.Name == "" {
-        iconName = fmt.Sprintf("%s_%dx%d.png", set.Prefix, icon.Width, icon.Height)
-      } else {
-        iconName = fmt.Sprintf("%s.png", icon.Name)
-      }
+			if icon.Name == "" {
+				iconName = fmt.Sprintf("%s_%dx%d.png", set.Prefix, icon.Width, icon.Height)
+			} else {
+				iconName = fmt.Sprintf("%s.png", icon.Name)
+			}
 
-      td := filepath.Join(targetDirectory, set.Prefix)
-      if _, err := os.Stat(td); os.IsNotExist(err) {
-      	if err := os.MkdirAll(td, 0755); err != nil {
-      		notifyError(err)
-      	}
-      }
+			td := filepath.Join(targetDirectory, set.Prefix)
+			if _, err := os.Stat(td); os.IsNotExist(err) {
+				if err := os.MkdirAll(td, 0755); err != nil {
+					notifyError(err)
+				}
+			}
 
-			go func(tf string, icfg L.IconConfig) {
+			go func(tf string, icfg L.IconConfig, scfg L.IconSet) {
 				crp := <-batch
+
+				if scfg.RemoveAlpha {
+					if crp.GetImageAlphaChannel() {
+						fmt.Printf("Warning: alpha channel removed from source at `%s`\n", tf)
+						crp.SetImageAlphaChannel(imagick.ALPHA_CHANNEL_REMOVE)
+					}
+				}
 
 				crp.SmartCrop(icfg.Width, icfg.Height)
 				crp.ShapeImage(icfg.Type, float64(icfg.Radius))
@@ -80,7 +87,7 @@ func main() {
 
 				done <- tf
 
-			}(filepath.Join(td, iconName), icon)
+			}(filepath.Join(td, iconName), icon, set)
 
 			batch <- L.MagickCropper{mw.Clone()}
 		}
