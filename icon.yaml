@@ -2,60 +2,57 @@ sets:
 - prefix: ios
   icons:
   # iOS
-  - name: icon-40
+  - name: Icon-App-20x20@2x
     width: 40
     height: 40
-  - name: icon-40@2x
-    width: 80
-    height: 80
-  - name: icon-40@3x
-    width: 120
-    height: 120
-  - name: icon-50
-    width: 50
-    height: 50
-  - name: icon-50@2x
-    width: 100
-    height: 100
-  - name: icon-60
+  - name: Icon-App-20x20@2x
     width: 60
     height: 60
-  - name: icon-60@2x
-    width: 120
-    height: 120
-  - name: icon-60@3x
-    width: 180
-    height: 180
-  - name: icon-72
-    width: 72
-    height: 72
-  - name: icon-72@2x
-    width: 144
-    height: 144
-  - name: icon-76
-    width: 76
-    height: 76
-  - name: icon-76@2x
-    width: 152
-    height: 152
-  - name: icon-83.5@2x
-    width: 167
-    height: 167
-  - name: icon-small
+  - name: Icon-App-29x29@1x
     width: 29
     height: 29
-  - name: icon-small@2x
+  - name: Icon-App-29x29@2x
     width: 58
     height: 58
-  - name: icon-small@3x
+  - name: Icon-App-29x29@3x
     width: 87
     height: 87
-  - name: icon
-    width: 57
-    height: 57
-  - name: icon@2x
-    width: 114
-    height: 114
+  - name: Icon-App-40x40@1x
+    width: 40
+    height: 40
+  - name: Icon-App-40x40@2x
+    width: 80
+    height: 80
+  - name: Icon-App-40x40@3x
+    width: 120
+    height: 120
+  - name: Icon-App-60x60@2x
+    width: 120
+    height: 120
+  - name: Icon-App-60x60@3x
+    width: 180
+    height: 180
+  - name: Icon-App-20x20@1x
+    width: 20
+    height: 20
+  - name: Icon-App-20x20@2x
+    width: 40
+    height: 40
+  - name: Icon-App-20x20@3x
+    width: 60
+    height: 60
+  - name: Icon-App-76x76@1x
+    width: 76
+    height: 76
+  - name: Icon-App-76x76@2x
+    width: 152
+    height: 152
+  - name: Icon-App-83.5x83.5@2x
+    width: 167
+    height: 167
+  - name: Icon-App-1024x1024@1x
+    width: 1024
+    height: 1024
 - prefix: android
   icons:
   # Android
