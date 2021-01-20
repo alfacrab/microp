@@ -9,7 +9,7 @@ TODO
 
 **This tool depends on imagemagick library (7.0.10-58), so you have to install it's build from [official site](https://www.imagemagick.org/script/download.php), [brew](https://docs.brew.sh/Installation) or [macports](https://www.macports.org/install.php) if it wasn't setup already.**
 
-```brew install https://homebrew.bintray.com/bottles/imagemagick-7.0.10-58.high_sierra.bottle.tar.gz```
+```brew install imagemagick```
 
 **Check your environment
 
